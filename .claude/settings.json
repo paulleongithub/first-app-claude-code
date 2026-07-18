@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"C:/Paul/claude-code/cursoUdemy/First app claude code\" && git add -A && if ! git diff --cached --quiet; then git commit -m \"chore: auto-backup $(date '+%Y-%m-%d %H:%M:%S')\" && git push origin master; fi",
+            "timeout": 30,
+            "statusMessage": "Fazendo backup das alterações no GitHub..."
+          }
+        ]
+      }
+    ]
+  }
+}
