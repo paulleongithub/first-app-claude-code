@@ -5,7 +5,7 @@ import type { Item, ItemDraft } from '../types/item'
 function sortItems(items: Item[]): Item[] {
   return [...items].sort((a, b) => {
     if (a.checked !== b.checked) return a.checked ? 1 : -1
-    return b.created_at.localeCompare(a.created_at)
+    return a.name.localeCompare(b.name)
   })
 }
 
@@ -20,7 +20,7 @@ export function useItems() {
       .from('items')
       .select('*')
       .order('checked', { ascending: true })
-      .order('created_at', { ascending: false })
+      .order('name', { ascending: true })
 
     if (error) {
       setError(error.message)
