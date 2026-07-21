@@ -40,6 +40,19 @@ export function ItemForm({ editingItem, onSubmit, onCancel }: ItemFormProps) {
 
     setError(null)
     onSubmit({ name: trimmedName, quantity: parsedQuantity })
+
+    if (!editingItem) {
+      setName('')
+      setQuantity('1')
+    }
+  }
+
+  function incrementQuantity() {
+    setQuantity((prev) => String((Number(prev) || 0) + 1))
+  }
+
+  function decrementQuantity() {
+    setQuantity((prev) => String(Math.max(1, (Number(prev) || 0) - 1)))
   }
 
   return (
@@ -61,14 +74,34 @@ export function ItemForm({ editingItem, onSubmit, onCancel }: ItemFormProps) {
           <label htmlFor="quantity" className="mb-1 block text-sm font-medium text-gray-700">
             Quantidade
           </label>
-          <input
-            id="quantity"
-            type="number"
-            min={1}
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-          />
+          <div className="flex items-stretch rounded-md border border-gray-300">
+            <input
+              id="quantity"
+              type="number"
+              min={1}
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              className="w-full min-w-0 rounded-l-md border-0 px-3 py-2 text-sm [appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            />
+            <div className="flex flex-col border-l border-gray-300">
+              <button
+                type="button"
+                onClick={incrementQuantity}
+                aria-label="Aumentar quantidade"
+                className="flex flex-1 items-center justify-center rounded-tr-md px-2 text-xs leading-none text-gray-600 hover:bg-gray-100"
+              >
+                ▲
+              </button>
+              <button
+                type="button"
+                onClick={decrementQuantity}
+                aria-label="Diminuir quantidade"
+                className="flex flex-1 items-center justify-center rounded-br-md border-t border-gray-300 px-2 text-xs leading-none text-gray-600 hover:bg-gray-100"
+              >
+                ▼
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
