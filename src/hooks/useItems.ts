@@ -93,5 +93,16 @@ export function useItems() {
     setItems((current) => current.filter((item) => item.id !== id))
   }, [])
 
-  return { items, loading, error, addItem, updateItem, toggleChecked, deleteItem }
+  const deleteAllItems = useCallback(async () => {
+    const { error } = await supabase.from('items').delete().not('id', 'is', null)
+
+    if (error) {
+      setError(error.message)
+      return
+    }
+    setError(null)
+    setItems([])
+  }, [])
+
+  return { items, loading, error, addItem, updateItem, toggleChecked, deleteItem, deleteAllItems }
 }

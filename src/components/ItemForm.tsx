@@ -5,9 +5,11 @@ interface ItemFormProps {
   editingItem: Item | null
   onSubmit: (draft: ItemDraft) => void
   onCancel: () => void
+  onDeleteAll: () => void
+  hasItems: boolean
 }
 
-export function ItemForm({ editingItem, onSubmit, onCancel }: ItemFormProps) {
+export function ItemForm({ editingItem, onSubmit, onCancel, onDeleteAll, hasItems }: ItemFormProps) {
   const [name, setName] = useState('')
   const [quantity, setQuantity] = useState('1')
   const [error, setError] = useState<string | null>(null)
@@ -53,6 +55,12 @@ export function ItemForm({ editingItem, onSubmit, onCancel }: ItemFormProps) {
 
   function decrementQuantity() {
     setQuantity((prev) => String(Math.max(1, (Number(prev) || 0) - 1)))
+  }
+
+  function handleDeleteAll() {
+    if (window.confirm('Excluir todos os itens da lista? Essa ação não pode ser desfeita.')) {
+      onDeleteAll()
+    }
   }
 
   return (
@@ -107,22 +115,32 @@ export function ItemForm({ editingItem, onSubmit, onCancel }: ItemFormProps) {
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <div className="flex gap-2">
-        <button
-          type="submit"
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          {editingItem ? 'Salvar' : 'Adicionar'}
-        </button>
-        {editingItem && (
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex gap-2">
           <button
-            type="button"
-            onClick={onCancel}
-            className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200"
+            type="submit"
+            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >
-            Cancelar
+            {editingItem ? 'Salvar' : 'Adicionar'}
           </button>
-        )}
+          {editingItem && (
+            <button
+              type="button"
+              onClick={onCancel}
+              className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200"
+            >
+              Cancelar
+            </button>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={handleDeleteAll}
+          disabled={!hasItems}
+          className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-red-300"
+        >
+          Limpar tudo
+        </button>
       </div>
     </form>
   )
