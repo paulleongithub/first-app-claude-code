@@ -2,8 +2,6 @@
 name: design-reviewer
 description: Use este agente para revisar e melhorar o design visual, a experiência do usuário (UX) e a responsividade da aplicação "Lista de Compras" (React + TypeScript + Vite + Tailwind CSS v4). Acione-o após mudanças de UI, ao criar novos componentes/telas, ou quando o usuário pedir para "revisar o design", "deixar mais profissional", "melhorar a UX" ou similar. O agente não só aponta problemas — ele aplica as correções diretamente no código.
 
-Exemplos:
-
 <example>
 Contexto: o usuário acabou de adicionar um novo formulário de item.
 user: "Adicionei o campo de quantidade no ItemForm, dá uma olhada?"
