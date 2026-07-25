@@ -64,7 +64,13 @@ export function ItemForm({ editingItem, onSubmit, onCancel, onDeleteAll, hasItem
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 rounded-lg border border-gray-200 p-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      {editingItem && (
+        <p className="text-sm font-medium text-blue-700">
+          Editando &ldquo;{editingItem.name}&rdquo;
+        </p>
+      )}
+
       <div className="flex gap-3">
         <div className="flex-1">
           <label htmlFor="name" className="mb-1 block text-sm font-medium text-gray-700">
@@ -73,53 +79,56 @@ export function ItemForm({ editingItem, onSubmit, onCancel, onDeleteAll, hasItem
           <input
             id="name"
             type="text"
+            autoComplete="off"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
           />
         </div>
-        <div className="w-24">
+        <div className="w-28 shrink-0">
           <label htmlFor="quantity" className="mb-1 block text-sm font-medium text-gray-700">
             Quantidade
           </label>
-          <div className="flex items-stretch rounded-md border border-gray-300">
+          <div className="flex items-stretch overflow-hidden rounded-md border border-gray-300 transition-colors focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20">
+            <button
+              type="button"
+              onClick={decrementQuantity}
+              aria-label="Diminuir quantidade"
+              className="flex w-8 shrink-0 items-center justify-center text-base leading-none text-gray-600 hover:bg-gray-100 focus:outline-none"
+            >
+              &minus;
+            </button>
             <input
               id="quantity"
               type="number"
               min={1}
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              className="w-full min-w-0 rounded-l-md border-0 px-3 py-2 text-sm [appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="w-full min-w-0 border-x border-gray-300 px-1 py-2 text-center text-sm [appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             />
-            <div className="flex flex-col border-l border-gray-300">
-              <button
-                type="button"
-                onClick={incrementQuantity}
-                aria-label="Aumentar quantidade"
-                className="flex flex-1 items-center justify-center rounded-tr-md px-2 text-xs leading-none text-gray-600 hover:bg-gray-100"
-              >
-                ▲
-              </button>
-              <button
-                type="button"
-                onClick={decrementQuantity}
-                aria-label="Diminuir quantidade"
-                className="flex flex-1 items-center justify-center rounded-br-md border-t border-gray-300 px-2 text-xs leading-none text-gray-600 hover:bg-gray-100"
-              >
-                ▼
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={incrementQuantity}
+              aria-label="Aumentar quantidade"
+              className="flex w-8 shrink-0 items-center justify-center text-base leading-none text-gray-600 hover:bg-gray-100 focus:outline-none"
+            >
+              +
+            </button>
           </div>
         </div>
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-red-600">
+          {error}
+        </p>
+      )}
 
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex gap-2">
           <button
             type="submit"
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="flex-1 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:flex-none"
           >
             {editingItem ? 'Salvar' : 'Adicionar'}
           </button>
@@ -127,7 +136,7 @@ export function ItemForm({ editingItem, onSubmit, onCancel, onDeleteAll, hasItem
             <button
               type="button"
               onClick={onCancel}
-              className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200"
+              className="flex-1 rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 sm:flex-none"
             >
               Cancelar
             </button>
@@ -137,7 +146,7 @@ export function ItemForm({ editingItem, onSubmit, onCancel, onDeleteAll, hasItem
           type="button"
           onClick={handleDeleteAll}
           disabled={!hasItems}
-          className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-red-300"
+          className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-red-300"
         >
           Limpar tudo
         </button>
